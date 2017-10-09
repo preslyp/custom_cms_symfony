@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+
+<nav class=" containernavbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Custom CMS</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ path('custom_cms_homepage') }}">Home</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <li><a href="{{ path('cms_user') }}">Users</a></li>
+                    <li><a href="{{ path('cms_category') }}">Categories</a></li>
+                    <li><a href="{{ path('cms_page') }}">Pages</a></li>
+
+                {% elseif  is_granted('ROLE_USER') %}
+
+                    <li><a href="{{ path('cms_page') }}">Pages</a></li>
+
+                {% else %}
+
+                    <li><a href="{{ path('login') }}">Login</a></li>
+
+                {% endif %}
+
+
+                {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+
+                    <li><a href="{{ path('logout') }}">Logout </a></li>
+
+                {% endif %}
+
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+
+    {% block body %}{% endblock %}
+
+</div>
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+{% endblock %}
+</body>
+</html>

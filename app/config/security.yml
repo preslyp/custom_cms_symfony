@@ -1,0 +1,37 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+   encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        Custom\CMSBundle\Entity\User: bcrypt
+   role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+   providers:
+        chain_provider:
+            chain:
+                 providers: [in_memory, user_db]
+        in_memory:
+            memory:
+                users:
+                    preslyp: { password: 111111, roles: ROLE_ADMIN }
+        user_db:
+            entity: { class: CustomCMSBundle:User, property: username }
+   firewalls:
+        main:
+            pattern: /.*
+            form_login:
+                 csrf_provider: security.csrf.token_manager
+                 login_path: /login
+                 check_path: /login_check
+                 default_target_path: /cms/page
+            logout:
+                 path: /logout
+                 target: /
+            security: true
+            anonymous: true
+   access_control:
+        - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /cms/user, roles: ROLE_ADMIN }
+        - { path: /cms/category, roles: ROLE_ADMIN }
+        - { path: /cms/page, roles: ROLE_USER }
+        - { path: /.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Blog</h1>
+
+    <div class="row">
+        {% for page in pages %}
+
+            <div class="col-md-4">
+
+                <h2>{{ page.title }}</h2>
+                <p>{{ page.content | slice(0,25) }}...
+                <a href="{{ path('custom_cms_page_display', {id: page.id}) }}">Read More</a>
+                </p>
+
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}
